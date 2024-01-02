@@ -1,0 +1,13 @@
+<h1>Task Management Application</h1>
+
+<h2>Pending Tasks</h2>
+{% for task in tasks%} {{ forloop.counter }} . {{task}} <br />{% endfor%}
+
+<br /><br />
+<h2>Completed Tasks</h2>
+{% for task in completed_tasks%} {{ forloop.counter }} . {{task}} <br />
+{% endfor%}
+
+<br /><br />
+<a href="/tasks"> View Pending Tasks</a>
+<a href="/completed_tasks"> View Completed Tasks</a>
