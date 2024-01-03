@@ -1,19 +1,21 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
+from tasks.models import Task
+
 tasks = []
 completed_tasks = []
 
 def tasks_view(request):
+    tasks = Task.objects.all()
     return render(request,"tasks.html",{"tasks" : tasks})
 
 def add_task_view(request):
-    tasks_value = request.GET.get("task")
-    tasks.append(tasks_value)
+    Task(title = request.GET.get("task")).save()
     return HttpResponseRedirect("/tasks")
 
 def delete_task_view(request, index):
-    del tasks[index-1]
+    Task.objects.filter(id=index).update(deleted=True)
     return HttpResponseRedirect("/tasks")
 
 def completed_tasks_view(request):
