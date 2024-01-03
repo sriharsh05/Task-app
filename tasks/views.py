@@ -8,7 +8,7 @@ completed_tasks = []
 
 def tasks_view(request):
     search_term = request.GET.get("search")
-    tasks = Task.objects.all()
+    tasks = Task.objects.filter(deleted=False)
     if search_term:
         tasks = tasks.filter(title__icontains=search_term)
     return render(request,"tasks.html",{"tasks" : tasks})
@@ -18,7 +18,7 @@ def add_task_view(request):
     return HttpResponseRedirect("/tasks")
 
 def delete_task_view(request, index):
-    Task.objects.filter(id=index).delete()
+    Task.objects.filter(id=index).update(deleted=True)
     return HttpResponseRedirect("/tasks")
 
 def completed_tasks_view(request):
