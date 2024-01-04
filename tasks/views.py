@@ -6,6 +6,21 @@ from django.views.generic.edit import CreateView, UpdateView
 from tasks.models import Task
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
+
+class UserLoginView(LoginView):
+    template_name = "user_login.html"
+ 
+class UserCreateView(CreateView):
+    form_class = UserCreationForm
+    template_name = "user_create.html"
+    success_url = "/user/login"
+
+def session_storage_view(request):
+    total_views = request.session.get("total_views", 0)
+    request.session["total_views"] = total_views + 1
+    return HttpResponse("Total views: {}".format(total_views))
 
 class TaskCreateForm(ModelForm):
 
