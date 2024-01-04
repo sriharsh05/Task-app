@@ -19,6 +19,14 @@ class GenericTaskView(ListView):
             tasks = tasks.filter(title__icontains=search_term)
         return tasks
 
+class CreateTaskView(View):
+    def get(self, request):
+        return render(request, "task_create.html")
+    
+    def post(self,request):
+        Task(title = request.POST.get("task")).save()
+        return HttpResponseRedirect("/tasks")
+
 def tasks_view(request):
     search_term = request.GET.get("search")
     tasks = Task.objects.filter(completed=False).filter(deleted=False)

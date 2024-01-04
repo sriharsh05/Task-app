@@ -1,0 +1,5 @@
+<form action="/create-task/" method="post">
+    {% csrf_token %}
+    <input type="text" name="task" />
+    <button type="submit">Add Task</button>
+  </form>
