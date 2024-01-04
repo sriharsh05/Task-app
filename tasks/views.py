@@ -1,7 +1,23 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.views import View
+
+from django.views.generic.list import ListView
 
 from tasks.models import Task
+
+class GenericTaskView(ListView):
+    queryset = Task.objects.filter(completed=False).filter(deleted=False)
+    template_name = "tasks.html"
+    context_object_name = "tasks"
+    paginate_by = 5
+
+    def get_queryset(self):
+        search_term = self.request.GET.get("search")
+        tasks = Task.objects.filter(completed=False).filter(deleted=False)
+        if search_term:
+            tasks = tasks.filter(title__icontains=search_term)
+        return tasks
 
 def tasks_view(request):
     search_term = request.GET.get("search")

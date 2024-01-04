@@ -21,3 +21,10 @@
 <br /><br />
 <a href="/completed_tasks"> View Completed Tasks</a>
 <a href="/all_tasks"> View All Tasks</a>
+
+{% for page in paginator.page_range %}
+<li>
+  <a href="?page={{ page }}&search={{request.GET.search}}">{{ page }}</a>
+</li>
+{% endfor %}
+
