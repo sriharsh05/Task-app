@@ -1,10 +1,28 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
-
 from django.views.generic.list import ListView
-
+from django.views.generic.edit import CreateView
 from tasks.models import Task
+from django.forms import ModelForm
+from django.core.exceptions import ValidationError
+
+class TaskCreateForm(ModelForm):
+
+    def clean_title(self):
+        title = self.cleaned_data.get("title")
+        if len(title) < 4:
+            raise ValidationError("Title must be at least 5 characters long")
+        return title
+    class Meta:
+        model = Task
+        fields = ("title", "description", "completed")
+        
+
+class GenericTaskCreateView(CreateView):
+    form_class = TaskCreateForm
+    template_name = "task_create.html"
+    success_url = "/tasks"
 
 class GenericTaskView(ListView):
     queryset = Task.objects.filter(completed=False).filter(deleted=False)
