@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from tasks.models import Task
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
@@ -17,7 +17,12 @@ class TaskCreateForm(ModelForm):
     class Meta:
         model = Task
         fields = ("title", "description", "completed")
-        
+
+class GenericTaskUpdateView(UpdateView):
+    model = Task
+    form_class = TaskCreateForm
+    template_name = "task_update.html"
+    success_url = "/tasks"        
 
 class GenericTaskCreateView(CreateView):
     form_class = TaskCreateForm

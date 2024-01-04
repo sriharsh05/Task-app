@@ -12,6 +12,7 @@
 <h2>Pending Tasks</h2>
 {% for task in tasks%} {{ forloop.counter }} . {{task.title}}
 <a href="/delete-task/{{ task.id }}/"> delete task</a>
+<a href="/update-task/{{ task.id }}/"> update task</a>
 <a href="/complete_task/{{ forloop.counter }}/"> complete task</a><br />
 {% endfor%}
 
