@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from tasks.models import Task
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
@@ -48,7 +48,12 @@ class GenericTaskUpdateView(AuthorisedTaskManager, UpdateView):
     model = Task
     form_class = TaskCreateForm
     template_name = "task_update.html"
-    success_url = "/tasks"        
+    success_url = "/tasks"
+
+class TaskDeleteView(AuthorisedTaskManager, DeleteView):
+    model = Task
+    template_name = "delete_task.html"
+    success_url = "/tasks"            
 
 class GenericTaskCreateView(CreateView):
     form_class = TaskCreateForm
@@ -88,13 +93,6 @@ def tasks_view(request):
         tasks = tasks.filter(title__icontains=search_term)
     return render(request,"tasks.html",{"tasks" : tasks})
 
-def add_task_view(request):
-    Task(title = request.GET.get("task")).save()
-    return HttpResponseRedirect("/tasks")
-
-def delete_task_view(request, index):
-    Task.objects.filter(id=index).update(deleted=True)
-    return HttpResponseRedirect("/tasks")
 
 def completed_tasks_view(request):
     completed_tasks = Task.objects.filter(completed=True).filter(deleted=False)
