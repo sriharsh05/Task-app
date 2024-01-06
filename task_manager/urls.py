@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.urls import path
 
-from tasks.views import (all_tasks_view, complete_task_view, completed_tasks_view, 
+from tasks.views import ( CompletedTaskListView, 
                          GenericTaskView, GenericTaskCreateView, GenericTaskUpdateView, session_storage_view, UserCreateView,
-                         UserLoginView,TaskDeleteView)
+                         UserLoginView,TaskDeleteView, TaskCompleteView)
 
 from django.contrib.auth.views import LogoutView
 
@@ -13,9 +13,8 @@ urlpatterns = [
     path('create-task/', GenericTaskCreateView.as_view()),
     path('update-task/<int:pk>/', GenericTaskUpdateView.as_view()),
     path('delete-task/<pk>/', TaskDeleteView.as_view()),
-    path('complete_task/<int:index>/', complete_task_view),
-    path('completed_tasks/', completed_tasks_view),
-    path('all_tasks/', all_tasks_view),
+    path('complete_task/<pk>/', TaskCompleteView.as_view()),
+    path('completed_tasks/', CompletedTaskListView.as_view()),
     path('sessiontest',session_storage_view),
     path('user/signup', UserCreateView.as_view()),
     path('user/login', UserLoginView.as_view()),
